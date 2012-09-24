@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squawkings", "Squawkings\Squawkings.csproj", "{38C17FC4-14CE-477E-9B79-E12DD6A864DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squawkings.Tests", "Squawkings.Tests\Squawkings.Tests.csproj", "{D4794777-4BCF-4D36-AE9C-51FE00C9DC1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6170523C-899F-45AA-A5AE-E228BD8590E4}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38C17FC4-14CE-477E-9B79-E12DD6A864DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38C17FC4-14CE-477E-9B79-E12DD6A864DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38C17FC4-14CE-477E-9B79-E12DD6A864DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38C17FC4-14CE-477E-9B79-E12DD6A864DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4794777-4BCF-4D36-AE9C-51FE00C9DC1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4794777-4BCF-4D36-AE9C-51FE00C9DC1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4794777-4BCF-4D36-AE9C-51FE00C9DC1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4794777-4BCF-4D36-AE9C-51FE00C9DC1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
