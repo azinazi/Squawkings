@@ -7,40 +7,62 @@ body {
     margin: 0 auto;
 }
 
+.squawk {
+    text-align: center;
+    width: 960px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+}
+
 .name {
     font-size: 14px;
     text-align: left;
-        padding: 15px 15px 0px 15px;
-        font-weight:bold;
+    padding: 15px 15px 0px 15px;
+    font-weight: bold;
+
+        background-color: #F2F2F2;
+}
+
+.text {
+    color: #333;
+    text-align: left;
+    padding: 15px 15px 0px 15px;
+        background-color: #F2F2F2;
+
 }
 
 .time {
     color: #A2A2A2;
     text-align: left;
     top: 0px;
-        padding: 15px 15px 15px 15px;
+    padding: 15px 15px 15px 15px;
     border-width: 1px;
     border-bottom: 1px #D4D4D4 solid;
-    width: 100%;
-    width: 100%;
+
+     background-color: #F2F2F2;
 }
 
-.text {
-    color: #333;
+.global {
+    color: #555;
+    font-size: 50px;
+    font-weight: 100;
     text-align: left;
-        padding: 15px 15px 0px 15px;
-}
-.squawk {
-    text-align: center;
-    width: 960px;
-    background-color: #F2F2F2;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom:0px;
-    
-}
+    position: relative;
+    line-height:50px;
 
 
+}
+
+.heading_desc {
+    color: #555;
+    font-size: 13px;
+    text-align: left;
+position: relative;
+line-height:13px;
+    padding: 0px 0px 15px 0px;
+}
 a {
     color: #049CDB;
 }
