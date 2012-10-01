@@ -7,6 +7,18 @@ body {
     margin: 0 auto;
 }
 
+.avatar {
+    background-color: #F2F2F2;
+    position: relative;
+    padding: 0px 0px 15px 0px;
+    float: left;
+    padding: 15px 15px 15px 15px;
+}
+
+.desc {
+    float: left;
+}
+
 .squawk {
     text-align: center;
     width: 960px;
@@ -21,16 +33,14 @@ body {
     text-align: left;
     padding: 15px 15px 0px 15px;
     font-weight: bold;
-
-        background-color: #F2F2F2;
+    background-color: #F2F2F2;
 }
 
 .text {
     color: #333;
     text-align: left;
     padding: 15px 15px 0px 15px;
-        background-color: #F2F2F2;
-
+    background-color: #F2F2F2;
 }
 
 .time {
@@ -40,8 +50,7 @@ body {
     padding: 15px 15px 15px 15px;
     border-width: 1px;
     border-bottom: 1px #D4D4D4 solid;
-
-     background-color: #F2F2F2;
+    background-color: #F2F2F2;
 }
 
 .global {
@@ -50,24 +59,24 @@ body {
     font-weight: 100;
     text-align: left;
     position: relative;
-    line-height:50px;
-
-
+    line-height: 50px;
 }
 
 .heading_desc {
     color: #555;
     font-size: 13px;
     text-align: left;
-position: relative;
-line-height:13px;
+    position: relative;
+    line-height: 13px;
     padding: 0px 0px 15px 0px;
 }
 a {
     color: #049CDB;
 }
 
-
+.clear {
+    clear: both;
+}
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/

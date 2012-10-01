@@ -1,27 +1,30 @@
 ﻿@model IEnumerable<Squawkings.Controllers.SquawkDisp>
-
 <div class="squawk">
-
-<div class="global">
-    Global Squawks
-</div>
-<div class="heading_desc">
-    See everyting happening right now
-</div>
+    <div class="global">
+        Global Squawks
+    </div>
+    <div class="heading_desc">
+        See everyting happening right now
+    </div>
     @foreach (var item in Model)
     {
-
-        <div class="name">
-            @Html.DisplayFor(modelItem => item.Username)
+  <div>
+        <div class="avatar">
+            <img src="@(item.Username == "test" ? "/content/images/placeholder-profile-img.jpg" : "/content/images/placeholder-profile-img2.jpg")"  />
         </div>
-
-        <div class="text">
-            @Html.DisplayFor(modelItem => item.Content)
+       
+        <div class="desc">
+            <div class="name">
+                @Html.DisplayFor(modelItem => item.Username)
+            </div>
+            <div class="text">
+                @Html.DisplayFor(modelItem => item.Content)
+            </div>
+            <div class="time">
+                @Html.DisplayFor(modelItem => item.Time)
+            </div>
+            <br class="clear" />
         </div>
-
-        <div class="time">
-            @Html.DisplayFor(modelItem => item.Time)
-        </div>
-
+    </div>
     }
 </div>
