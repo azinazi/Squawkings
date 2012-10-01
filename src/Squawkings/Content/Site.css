@@ -1,75 +1,72 @@
-body
-{
-    font-size: .85em;
-    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
-    color: #232323;
-    background-color: #fff;
+body {
+    font-family: "Helvetica Neue";
+    background-image: url("images/background.png");
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    margin: 0 auto;
 }
 
-header,
-footer,
-nav,
-section {
-    display: block;
+.name {
+    font-size: 14px;
+    text-align: left;
+        padding: 15px 15px 0px 15px;
+        font-weight:bold;
 }
 
-/* Styles for basic forms
------------------------------------------------------------*/
-
-fieldset 
-{
-    border:1px solid #ddd;
-    padding:0 1.4em 1.4em 1.4em;
-    margin:0 0 1.5em 0;
+.time {
+    color: #A2A2A2;
+    text-align: left;
+    top: 0px;
+        padding: 15px 15px 15px 15px;
+    border-width: 1px;
+    border-bottom: 1px #D4D4D4 solid;
+    width: 100%;
+    width: 100%;
 }
 
-legend 
-{
-    font-size:1.2em;
-    font-weight: bold;
+.text {
+    color: #333;
+    text-align: left;
+        padding: 15px 15px 0px 15px;
+}
+.squawk {
+    text-align: center;
+    width: 960px;
+    background-color: #F2F2F2;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom:0px;
+    
 }
 
-textarea 
-{
-    min-height: 75px;
+
+a {
+    color: #049CDB;
 }
 
-.editor-label 
-{
-    margin: 1em 0 0 0;
-}
-
-.editor-field 
-{
-    margin:0.5em 0 0 0;
-}
 
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
-.field-validation-error
-{
+.field-validation-error {
     color: #ff0000;
 }
 
-.field-validation-valid
-{
+.field-validation-valid {
     display: none;
 }
 
-.input-validation-error
-{
+.input-validation-error {
     border: 1px solid #ff0000;
     background-color: #ffeeee;
 }
 
-.validation-summary-errors
-{
+.validation-summary-errors {
     font-weight: bold;
     color: #ff0000;
 }
 
-.validation-summary-valid
-{
+.validation-summary-valid {
     display: none;
 }

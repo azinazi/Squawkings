@@ -1,5 +1,19 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
+﻿@model IEnumerable<Squawkings.Controllers.SquawkDisp>
+<div class="squawk">
+    @foreach (var item in Model)
+    {
 
-<h2>Hello Squawkings</h2>
+        <div class="name">
+            @Html.DisplayFor(modelItem => item.Username)
+        </div>
+
+        <div class="text">
+            @Html.DisplayFor(modelItem => item.Content)
+        </div>
+
+        <div class="time">
+            @Html.DisplayFor(modelItem => item.Time)
+        </div>
+
+    }
+</div>
