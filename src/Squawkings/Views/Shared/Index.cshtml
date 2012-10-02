@@ -1,30 +1,37 @@
 ﻿@model IEnumerable<Squawkings.Controllers.SquawkDisp>
-<div class="squawk">
-    <div class="global">
-        Global Squawks
+<div class="container">
+    <div class="squawk-title">
+        <h1>
+            Global Squawks</h1>
+        <p>
+            See everyting happening right now</p>
     </div>
-    <div class="heading_desc">
-        See everyting happening right now
-    </div>
-    @foreach (var item in Model)
-    {
-  <div>
-        <div class="avatar">
-            <img src="@(item.Username == "test" ? "/content/images/placeholder-profile-img.jpg" : "/content/images/placeholder-profile-img2.jpg")"  />
-        </div>
-       
-        <div class="desc">
-            <div class="name">
-                @Html.DisplayFor(modelItem => item.Username)
-            </div>
-            <div class="text">
-                @Html.DisplayFor(modelItem => item.Content)
-            </div>
-            <div class="time">
-                @Html.DisplayFor(modelItem => item.Time)
-            </div>
-            <br class="clear" />
+    <div class="add-squawk">
+        @Html.TextArea("name", "This is my first Squawk!")
+        <div class="squwak-button">
+            <input type="button" value="Squawk" name="button" />
         </div>
     </div>
-    }
+    <div class="squawks">
+        @foreach (var item in Model)
+        {
+            <div class="squawk-container">
+                <div class="squawk">
+                    <div class="avatar">
+                        <a href="">
+                            <img src="@(item.Username == "test" ? "/content/images/placeholder-profile-img.jpg" : "/content/images/placeholder-profile-img2.jpg")"  alt="test" /></a>
+                    </div>
+                    <div class="username">
+                        @item.Username <span>(@item.FullName)</span>
+                    </div>
+                    <div class="squawk-content">
+                        @item.Content
+                    </div>
+                    <div class="squawk-footer">
+                        @item.Time
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
