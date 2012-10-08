@@ -68,11 +68,11 @@ body, span, textarea, input {
 .squawk-container {
     border-bottom: 1px solid #D4D4D4;
     position: relative;
+    padding:15px;
 }
 
 .squawk {
-    margin-left: 87px;
-    margin-top: 15px;
+    margin-left: 72px;
 }
 
 .squawk-container:last-child {
@@ -101,7 +101,6 @@ body, span, textarea, input {
     color: #333;
     text-align: left;
     margin-bottom: 15px;
-    margin-right: 15px;
 }
 
 .squawk-footer {
