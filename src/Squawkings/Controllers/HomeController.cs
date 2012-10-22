@@ -25,7 +25,7 @@ namespace Squawkings.Controllers
         //
         // GET: /Home/
 
-        public ActionResult Index()
+        public ActionResult Home()
         {
             List<SquawkDisp> squawkDisps = GetSquawkDisps();
 

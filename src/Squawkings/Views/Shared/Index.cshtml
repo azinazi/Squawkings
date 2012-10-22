@@ -1,37 +1,22 @@
-﻿@model IEnumerable<Squawkings.Controllers.SquawkDisp>
-<div class="container">
-    <div class="squawk-title">
-        <h1>
-            Global Squawks</h1>
-        <p>
-            See everyting happening right now</p>
+﻿<div class="header-background">
+</div>
+<div class="logon-container">
+    <form  action="" method="post">
+    @Html.ValidationSummary(true)
+    <div class="username">
+        <input type="text" name="userName" placeholder="username" />
     </div>
-    <div class="add-squawk">
-        @Html.TextArea("name", "This is my first Squawk!")
-        <div class="squwak-button">
-            <input type="button" value="Squawk" name="button" />
-        </div>
+    <div class="password">
+        <input type="text" name="password" placeholder="password" />
     </div>
-    <div class="squawks">
-        @foreach (var item in Model)
-        {
-            <div class="squawk-container">
-                <div class="squawk">
-                    <div class="avatar">
-                        <a href="">
-                            <img src="@(item.Username == "test" ? "/content/images/placeholder-profile-img.jpg" : "/content/images/placeholder-profile-img2.jpg")"  alt="test" /></a>
-                    </div>
-                    <div class="username">
-                        @item.Username <span>(@item.FullName)</span>
-                    </div>
-                    <div class="squawk-content">
-                        @item.Content
-                    </div>
-                    <div class="squawk-footer">
-                        @item.Time
-                    </div>
-                </div>
-            </div>
-        }
+    <div>
+        <label class="checkbox">
+            <input type="checkbox" name="rememberMe" />
+            Remember me
+        </label>
     </div>
+    <div class="logon">
+        <input type="submit" value="Log in" class="btn btn-info login_button"/>
+    </div>
+    </form>
 </div>
