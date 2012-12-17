@@ -1,0 +1,28 @@
+﻿@using Squawkings.Controllers
+@using Squawkings.Models;
+
+@model Squawkings.Controllers.ImageInputData
+<div class="container">
+    <div class="squawk-title">
+        <h1>
+            Profile Upload</h1>
+        <p>
+            Use a Gravator or Upload an image</p>
+    </div>
+    <div class="upload-container">
+        @using (Html.Form<ImageInputData>("Image", "Profile", null, x => x.Attr("enctype", "multipart/form-data")))
+        {
+            @Html.AntiForgeryToken()
+            <div>
+                <strong>Use Gravatar:</strong> @Html.Input(m => m.IsGravator).AddClass("checkbox-noborder")
+            </div>
+            <div>
+                <strong>Image:</strong> @Html.Input(m => m.Image)
+            </div>
+            <div>
+                @Html.Submit("Save").AddClass("btn btn-primary login_button")
+                <a href=@Url.Action("IndexById", "Profile", new { userId = User.Identity.Id()}) class="btn">Cancel</a>
+            </div>
+        }
+    </div>
+</div>

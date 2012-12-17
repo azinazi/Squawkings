@@ -1,45 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using NPoco;
+using Squawkings.Models;
 
 namespace Squawkings.Controllers
 {
-
     public class HomeController : Controller
     {
-        private static List<SquawkDisp> GetSquawkDisps()
-        {
-            var squawks = new List<SquawkDisp>
-					  {
-						  new SquawkDisp() { Username = "test", FullName = "Test User", Time = DateTime.Now.AddMinutes(0), Content = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
-						  new SquawkDisp() { Username = "test2", FullName = "Test Two", Time = DateTime.Now.AddMinutes(-1), Content = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
-						  new SquawkDisp() { Username = "test", FullName = "Test User", Time = DateTime.Now.AddMinutes(-2), Content = "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
-						  new SquawkDisp() { Username = "test2", FullName = "Test Two", Time = DateTime.Now.AddMinutes(-3), Content = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
-						  new SquawkDisp() { Username = "test2", FullName = "Test Two", Time = DateTime.Now.AddMinutes(-4), Content = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
-						  new SquawkDisp() { Username = "test", FullName = "Test User", Time = DateTime.Now.AddMinutes(-5), Content = "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
-					  };
-            return squawks;
-        }
-        //
-        // GET: /Home/
+        private readonly IDatabase db;
 
-        public ActionResult Home()
+        public HomeController(IDatabase db)
         {
-            List<SquawkDisp> squawkDisps = GetSquawkDisps();
-
-            return View(squawkDisps);
+            this.db = db;
         }
 
+        [OutputCache(Duration = 10)]
+        public ActionResult Total()
+        {
+            var total = new Total();
+            total.TotalSquawks = db.SingleOrDefault<string>("select count(*) from Squawks ");
+            total.TotalUsers = db.SingleOrDefault<string>("select count(*) from Users ");
+            return PartialView(total);
+        }
+
+        public ActionResult Index()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Global");
+
+            var SquawkTemplate = new SquawkTemplate();
+            SquawkTemplate.Where("u.UserId=@0 or u.UserId in (select UserId from Followers where FollowerUserId=@0)", User.Identity.Name);
+            var squawkDisps = db.SkipTake<SquawkDisp>(0,20,SquawkTemplate.temp1);
+
+            var squawks = new Squawks();
+            squawks.SquawksList = squawkDisps;
+            return View(squawks);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(Squawks squawks)
+        {
+
+            var squawk = new Squawk();
+            squawk.Content = squawks.Squawk;
+            squawk.UserId = User.Identity.Id();
+            squawk.CreatedAt = DateTime.UtcNow;
+
+            db.Insert(squawk);
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 
-    public class SquawkDisp
+    public class Total
     {
-        public string Username { get; set; }
-        public string FullName { get; set; }
-        public string Content { get; set; }
-        public DateTime Time { get; set; }
-        public string AvatarUrl { get; set; }
+        public string TotalUsers { set; get; }
+        public string TotalSquawks { set; get; }
     }
 }

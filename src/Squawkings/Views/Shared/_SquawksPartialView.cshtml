@@ -1,0 +1,23 @@
+﻿@using Squawkings.Models
+@model IEnumerable<Squawkings.Models.SquawkDisp>
+        
+@foreach (SquawkDisp item in Model)
+{
+    <div class="squawk-container">
+        <div class="squawk">
+            <div class="avatar">
+                <a href=@item.UserName>
+                    <img src="@(item.AvatarUrl)"  class="avator-image"/></a>
+            </div>
+            <div class="username">
+                @item.UserName <span>(@item.FullName)</span>
+            </div>
+            <div class="squawk-content">
+                @item.Content
+            </div>
+            <div class="squawk-footer">
+                @item.CreatedAt.ToPrettyDate()
+            </div>
+        </div>
+    </div>
+}

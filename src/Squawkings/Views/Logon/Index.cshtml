@@ -1,0 +1,31 @@
+﻿@using Squawkings.Controllers
+@model Squawkings.Controllers.LogonInputData
+<div class="container">
+    @using (Html.Form<LogonInputData>())
+    {
+        @Html.Input(m => m.ReturnUrl)
+        @Html.AntiForgeryToken()
+        <div class="error-content">
+            @Html.ValidationSummary(true)
+        </div>
+        <div class="logon-container">
+            <div class="username">
+                @Html.Input(m => m.UserName).Attr("Placeholder", "username")
+
+            </div>
+            <div class="password">
+                @Html.Input(m => m.Password).Attr("Placeholder", "password")
+            </div>
+            <div>
+                <label class="checkbox">
+                    @Html.Input(m => m.rememberMe)
+                    Remember me
+                </label>
+            </div>
+            <div class="logon">
+                @Html.Submit("Logon").AddClass("btn btn-primary login_button")
+            </div>
+
+        </div>
+    }
+</div>

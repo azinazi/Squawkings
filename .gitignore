@@ -8,5 +8,6 @@ obj
 *.user
 _ReSharper*
 TestResults
+dev_*
 connectionStrings.config
 rh.exe

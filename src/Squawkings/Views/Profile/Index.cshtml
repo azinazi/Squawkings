@@ -1,0 +1,54 @@
+﻿@using Squawkings.Models
+@model Squawkings.Models.ProfileSquawks
+<div class="container">
+  <div class="inner-container">
+    @using (Html.Form<ProfileSquawks>())
+    {
+        @Html.AntiForgeryToken()
+        @Html.Input(m => m.followerInfo.Following)
+        @Html.Input(m => m.UserId)
+
+        <div class="profile-container row-fluid">
+            <div class="profile span10">
+                <div class="avatar">
+                    <a href="Image"> <img src="@(Model.AvatarUrl)"  class="avator-image"/></a>
+                </div>
+                <div class="profile-username">
+                    @Model.UserName                    
+                </div>
+                <div class="fullName">
+                    @Model.FullName
+                </div>
+                <div class="bio-content">
+                    @Model.Bio
+                </div>
+              
+            </div> 
+            <div class="followers span2">
+                <strong>@Model.followerInfo.Followyees</strong> Followers
+                <hr />
+                <strong>@Model.followerInfo.Followers</strong> Following
+                <hr />
+                @if (!Model.followerInfo.IsSameUser)
+                {
+                    if (Model.followerInfo.Following)
+                    {
+                        @Html.Submit("Unfollow").AddClass("btn")
+                        ;
+                    }
+                    else
+                    {
+                        @Html.Submit("Follow").AddClass("btn")
+                        ;
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="squawks">
+            @Html.Partial("_SquawksPartialView", Model.SquawksList)
+        </div>
+  
+    }
+          </div>
+</div>

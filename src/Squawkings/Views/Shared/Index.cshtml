@@ -1,13 +1,17 @@
-﻿<div class="header-background">
+﻿@model Squawkings.Controllers.InputData
+<div class="header-background">
 </div>
 <div class="logon-container">
-    <form  action="" method="post">
+    <form action="" method="post">
     @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
     <div class="username">
-        <input type="text" name="userName" placeholder="username" />
+        @Html.TextBoxFor(m => m.UserName, new { placeholder = "username" })
+        @Html.ValidationMessage("UserName")
     </div>
     <div class="password">
-        <input type="text" name="password" placeholder="password" />
+        @Html.PasswordFor(m => m.Password, new { placeholder = "password" })
+        @Html.ValidationMessage("Password")
     </div>
     <div>
         <label class="checkbox">
@@ -16,7 +20,7 @@
         </label>
     </div>
     <div class="logon">
-        <input type="submit" value="Log in" class="btn btn-info login_button"/>
+        <input type="submit" value="Log in" class="btn btn-info login_button" />
     </div>
     </form>
 </div>

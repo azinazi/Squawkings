@@ -19,7 +19,7 @@
                 <div class="squawk">
                     <div class="avatar">
                         <a href="">
-                            <img src="@(item.Username == "test" ? "/content/images/placeholder-profile-img.jpg" : "/content/images/placeholder-profile-img2.jpg")"  alt="test" /></a>
+                            <img src=@(item.AvatarUrl)  alt="test" /></a>
                     </div>
                     <div class="username">
                         @item.Username <span>(@item.FullName)</span>

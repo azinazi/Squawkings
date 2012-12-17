@@ -1,0 +1,25 @@
+﻿@using Squawkings.Models
+@model Squawkings.Models.Squawks
+<div class="container">
+    <div class="squawk-title">
+        <h1>
+            Local Squawks</h1>
+        <p>
+            See everyting that I'm interested in</p>
+    </div>
+    <div class="add-squawk">
+        @using (Html.Form<Squawks>())
+        {
+            @Html.AntiForgeryToken()
+            @Html.Input(m => m.Squawk)
+            <div class="add-squawk-footer">
+                <div class="squwak-validation">@Html.ValidationSummary()</div>
+                
+                <div class="squwak-button">@Html.Submit("Squawk").AddClass("btn btn-primary")</div>
+            </div>
+        }
+    </div>
+    <div class="squawks">
+        @Html.Partial("_SquawksPartialView", Model.SquawksList)
+    </div>
+</div>

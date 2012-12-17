@@ -1,36 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Helpers;
+using NPoco;
 
 namespace Squawkings.Controllers
 {
     public class LogonController : Controller
     {
-        //
-        // GET: /Logon/
+        private readonly IDatabase db;
+
+        public LogonController(IDatabase db)
+        {
+            this.db = db;
+        }
 
         public ActionResult Index()
         {
+
             return View();
         }
 
         [HttpPost]
-        public ActionResult Index(string username,string password)
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(LogonInputData inputData)
         {
-            if (username =="test" && password=="test")
+            if (!ModelState.IsValid)
+                return Index();
+
+            bool passwordValid = false;
+            LogonInputData user = db.SingleOrDefault<LogonInputData>("select us.UserName,u.UserId,u.Password from UserSecurityInfo u inner join Users us on us.UserId = u.UserId where us.UserName=@0", inputData.UserName);
+            if (user != null)
             {
-                FormsAuthentication.SetAuthCookie(username,false);
-                return RedirectToAction("Home","Home");
+
+                if (Crypto.VerifyHashedPassword(user.Password, inputData.Password))
+                    passwordValid = true;
             }
             else
             {
-                ModelState.AddModelError("","Logon error happened");
-                return View();
+                
+                //User newUser = new User();
+                //newUser.UserName= inputData.UserName;
+                //Int32 newUserId = (Int32) db.Insert(newUser);
+                //UserSecurityInfo userSecurityInfo = new UserSecurityInfo();
+                //userSecurityInfo.UserId = newUserId;
+                //userSecurityInfo.Password = Crypto.HashPassword(inputData.Password);
+                //db.Insert(userSecurityInfo);
+                //FormsAuthentication.SetAuthCookie(newUserId.ToString(), user.rememberMe);
+                return RedirectToAction("Index", "Home");
+                
+            }
+
+            if (passwordValid)
+            {
+
+                FormsAuthentication.SetAuthCookie(user.UserId.ToString(), user.rememberMe);
+                return RedirectToAction("Index","Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "You cannot logon");
+                return Index();
             }
         }
 
+        public ActionResult Logoff()
+        {
+
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Logon");
+        }
+
+    }
+
+
+    public class LogonInputData
+    {
+        [Required]
+        public string UserName { get; set; }
+        [DataType(DataType.Password)]
+        [Required]
+        public string Password { get; set; }
+        public bool rememberMe { get; set; }
+        public int UserId { get; set; }
+        [HiddenInput]
+        public string ReturnUrl { get; set; }
     }
 }

@@ -4,6 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SchoStack.Web;
+using SchoStack.Web.ActionControllers;
+using SchoStack.Web.Conventions;
+using SchoStack.Web.Conventions.Core;
+using Squawkings.Models;
 
 namespace Squawkings
 {
@@ -20,11 +25,19 @@ namespace Squawkings
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("favicon.ico");
 
+            routes.MapRoute("logon", "logon", new { controller = "Logon", action = "Index" });
+            routes.MapRoute("logoff", "logoff", new { controller = "Logon", action = "logoff" });
+            routes.MapRoute("global", "global", new { controller = "Global", action = "Index" });
+            routes.MapRoute("home", "", new { controller = "Home", action = "Index" });
+            routes.MapRoute("total", "", new { controller = "Home", action = "Total" });
+            routes.MapRoute("image", "Image", new { controller = "Profile", action = "Image" });
+            routes.MapRoute("profilebyid", "profile/{userId}", new { controller = "Profile", action = "IndexById" });
             routes.MapRoute(
-                "Default", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Logon", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                "profile", 
+                "{username}", 
+                new { controller = "Profile", action = "Index", id = UrlParameter.Optional } 
             );
 
         }
@@ -35,6 +48,13 @@ namespace Squawkings
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            HtmlConventionFactory.Add(new DefaultHtmlConventions());
+            HtmlConventionFactory.Add(new DataAnnotationHtmlConventions());
+            HtmlConventionFactory.Add(new DataAnnotationValidationHtmlConventions());
+            HtmlConventionFactory.Add(new UploadFileConventions());
         }
     }
+
+  
 }

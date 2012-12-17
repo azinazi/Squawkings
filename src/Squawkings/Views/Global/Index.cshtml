@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Squawkings.Models.SquawkDisp>
+
+<div class="container">
+    <div class="squawk-title">
+        <h1>
+            Global Squawks</h1>
+        <p>
+            See everyting happening right now</p>
+    </div>
+    <div class="squawks">
+        @Html.Partial("_SquawksPartialView", Model)
+    </div>
+</div>
