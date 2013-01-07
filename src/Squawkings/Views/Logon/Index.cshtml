@@ -1,7 +1,7 @@
 ﻿@using Squawkings.Controllers
-@model Squawkings.Controllers.LogonInputData
+@model Squawkings.Controllers.LogonInputModel
 <div class="container">
-    @using (Html.Form<LogonInputData>())
+    @using (Html.Form<LogonInputModel>())
     {
         @Html.Input(m => m.ReturnUrl)
         @Html.AntiForgeryToken()

@@ -1,8 +1,9 @@
-﻿@using Squawkings.Models
-@model Squawkings.Models.ProfileSquawks
+﻿@using Squawkings.Controllers
+@using Squawkings.Models
+@model Squawkings.Controllers.ProfileSquawksInputModel
 <div class="container">
   <div class="inner-container">
-    @using (Html.Form<ProfileSquawks>())
+    @using (Html.Form<ProfileSquawksInputModel>())
     {
         @Html.AntiForgeryToken()
         @Html.Input(m => m.followerInfo.Following)

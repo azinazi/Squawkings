@@ -1,3 +1,4 @@
+using FluentValidation;
 using NPoco;
 using StructureMap;
 namespace Squawkings {
@@ -9,6 +10,7 @@ namespace Squawkings {
                                     {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
+                                        scan.ConnectImplementationsToTypesClosing(typeof(IValidator<>));
                                     });
             //                x.For<IExample>().Use<Example>();
                             x.For<IDatabase>().HybridHttpOrThreadLocalScoped().Use(DatabaseFactory.GetDatabase());

@@ -4,11 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentValidation;
+using FluentValidation.Mvc;
 using SchoStack.Web;
 using SchoStack.Web.ActionControllers;
 using SchoStack.Web.Conventions;
 using SchoStack.Web.Conventions.Core;
 using Squawkings.Models;
+using FluentValidation.Attributes;
+using StructureMap;
 
 namespace Squawkings
 {
@@ -53,8 +57,17 @@ namespace Squawkings
             HtmlConventionFactory.Add(new DataAnnotationHtmlConventions());
             HtmlConventionFactory.Add(new DataAnnotationValidationHtmlConventions());
             HtmlConventionFactory.Add(new UploadFileConventions());
+
+            ModelValidatorProviders.Providers.Add(new FluentValidationModelValidatorProvider( new AttributedValidatorFactory()));
         }
     }
 
+    public class StructureMapValidatorFactory : ValidatorFactoryBase
+    {
+        public override IValidator CreateInstance(Type validatorType)
+        {
+            return ObjectFactory.TryGetInstance(validatorType) as IValidator;
+        }
+    }
   
 }

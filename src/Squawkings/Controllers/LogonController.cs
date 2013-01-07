@@ -23,17 +23,17 @@ namespace Squawkings.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(LogonInputData inputData)
+        public ActionResult Index(LogonInputModel inputModel)
         {
             if (!ModelState.IsValid)
                 return Index();
 
             bool passwordValid = false;
-            LogonInputData user = db.SingleOrDefault<LogonInputData>("select us.UserName,u.UserId,u.Password from UserSecurityInfo u inner join Users us on us.UserId = u.UserId where us.UserName=@0", inputData.UserName);
+            LogonInputModel user = db.SingleOrDefault<LogonInputModel>("select us.UserName,u.UserId,u.Password from UserSecurityInfo u inner join Users us on us.UserId = u.UserId where us.UserName=@0", inputModel.UserName);
             if (user != null)
             {
 
-                if (Crypto.VerifyHashedPassword(user.Password, inputData.Password))
+                if (Crypto.VerifyHashedPassword(user.Password, inputModel.Password))
                     passwordValid = true;
             }
             else
@@ -75,7 +75,7 @@ namespace Squawkings.Controllers
     }
 
 
-    public class LogonInputData
+    public class LogonInputModel
     {
         [Required]
         public string UserName { get; set; }

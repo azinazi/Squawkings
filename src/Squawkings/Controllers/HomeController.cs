@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Web.Security;
+using FluentValidation;
 using NPoco;
 using Squawkings.Models;
 
@@ -34,7 +36,7 @@ namespace Squawkings.Controllers
             SquawkTemplate.Where("u.UserId=@0 or u.UserId in (select UserId from Followers where FollowerUserId=@0)", User.Identity.Name);
             var squawkDisps = db.SkipTake<SquawkDisp>(0,20,SquawkTemplate.temp1);
 
-            var squawks = new Squawks();
+            var squawks = new SquawksInputModel();
             squawks.SquawksList = squawkDisps;
             return View(squawks);
         }
@@ -42,11 +44,13 @@ namespace Squawkings.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(Squawks squawks)
+        public ActionResult Index(SquawkInputModel squawksInputModel)
         {
+            if (!ModelState.IsValid)
+                return Index();
 
             var squawk = new Squawk();
-            squawk.Content = squawks.Squawk;
+            squawk.Content = squawksInputModel.Squawk;
             squawk.UserId = User.Identity.Id();
             squawk.CreatedAt = DateTime.UtcNow;
 
@@ -60,5 +64,35 @@ namespace Squawkings.Controllers
     {
         public string TotalUsers { set; get; }
         public string TotalSquawks { set; get; }
+    }
+
+    public class SquawksInputModel
+    {
+        public List<SquawkDisp> SquawksList { get; set; }
+
+        [DataType(DataType.Text)]
+        public string Squawk { get; set; }
+    }
+
+
+
+    [FluentValidation.Attributes.Validator(typeof(HomeValidator))]
+    public class SquawkInputModel
+    {
+        [DataType(DataType.Text)]
+        public string Squawk { get; set; }
+    }
+
+    public class HomeValidator : AbstractValidator<SquawkInputModel>
+    {
+
+        public HomeValidator()
+        {
+            RuleFor(s => s.Squawk)
+                .NotEmpty()
+                .Length(0, 400)
+                .WithMessage("length shouldnt exceed 400 chars.");
+        }
+
     }
 }

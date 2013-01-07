@@ -1,14 +1,14 @@
-﻿@using Squawkings.Models
-@model Squawkings.Models.Squawks
+﻿@using Squawkings.Controllers
+@model Squawkings.Controllers.SquawksInputModel
 <div class="container">
     <div class="squawk-title">
         <h1>
-            Local Squawks</h1>
+            Local SquawksInputModel</h1>
         <p>
             See everyting that I'm interested in</p>
     </div>
     <div class="add-squawk">
-        @using (Html.Form<Squawks>())
+        @using (Html.Form<SquawkInputModel>())
         {
             @Html.AntiForgeryToken()
             @Html.Input(m => m.Squawk)

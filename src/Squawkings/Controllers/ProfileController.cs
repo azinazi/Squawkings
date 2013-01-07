@@ -28,7 +28,7 @@ namespace Squawkings.Controllers
         {
 
             var profile =
-                db.SingleOrDefault<ProfileSquawks>(
+                db.SingleOrDefault<ProfileSquawksInputModel>(
                     "select u.FirstName,u.LastName,u.UserName,u.Bio,u.UserId,u.AvatarUrl "
                     + "from Users u where u.UserName=@0 ", username);
 
@@ -51,7 +51,7 @@ namespace Squawkings.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult Index(ProfileSquawks model)
+        public ActionResult Index(ProfileSquawksInputModel model)
         {
 
             var following =
@@ -117,4 +117,37 @@ namespace Squawkings.Controllers
 
         public HttpPostedFileBase Image { get; set; }
     }
+
+    public class ProfileSquawksInputModel
+    {
+        [HiddenInput]
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string AvatarUrl { get; set; }
+        public string Email { get; set; }
+        public string Bio { get; set; }
+        public bool IsGravatar { get; set; }
+
+        public string FullName
+        {
+            get { return FirstName + " " + LastName; }
+        }
+
+        public FollowerInfo followerInfo { get; set; }
+        public List<SquawkDisp> SquawksList { get; set; }
+    }
+
+    public class FollowerInfo
+    {
+        public int Followers { get; set; }
+        public int Followyees { get; set; }
+
+        [HiddenInput]
+        public bool Following { get; set; }
+
+        public bool IsSameUser { get; set; }
+    }
+
 }
