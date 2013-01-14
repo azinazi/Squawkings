@@ -9,15 +9,21 @@ namespace Squawkings.Controllers
     public class LogonController : Controller
     {
         private readonly IDatabase db;
+        private readonly IAuthentication auth;
 
         public LogonController(IDatabase db)
         {
             this.db = db;
         }
 
+        public LogonController(IDatabase db, IAuthentication auth)
+        {
+            this.db = db;
+            this.auth = auth;
+        }
+
         public ActionResult Index()
         {
-
             return View();
         }
 
@@ -28,40 +34,20 @@ namespace Squawkings.Controllers
             if (!ModelState.IsValid)
                 return Index();
 
-            bool passwordValid = false;
-            LogonInputModel user = db.SingleOrDefault<LogonInputModel>("select us.UserName,u.UserId,u.Password from UserSecurityInfo u inner join Users us on us.UserId = u.UserId where us.UserName=@0", inputModel.UserName);
+            var user = db.SingleOrDefault<UserInfo>("select u.UserId,u.Password from UserSecurityInfo u inner join Users us on us.UserId = u.UserId where us.UserName=@0", inputModel.UserName);
             if (user != null)
             {
 
                 if (Crypto.VerifyHashedPassword(user.Password, inputModel.Password))
-                    passwordValid = true;
-            }
-            else
-            {
-                
-                //User newUser = new User();
-                //newUser.UserName= inputData.UserName;
-                //Int32 newUserId = (Int32) db.Insert(newUser);
-                //UserSecurityInfo userSecurityInfo = new UserSecurityInfo();
-                //userSecurityInfo.UserId = newUserId;
-                //userSecurityInfo.Password = Crypto.HashPassword(inputData.Password);
-                //db.Insert(userSecurityInfo);
-                //FormsAuthentication.SetAuthCookie(newUserId.ToString(), user.rememberMe);
-                return RedirectToAction("Index", "Home");
-                
+                {
+                    auth.Authenticate(user.UserId.ToString(), inputModel.rememberMe);
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
-            if (passwordValid)
-            {
+            ModelState.AddModelError("", "You cannot logon");
+            return Index();
 
-                FormsAuthentication.SetAuthCookie(user.UserId.ToString(), user.rememberMe);
-                return RedirectToAction("Index","Home");
-            }
-            else
-            {
-                ModelState.AddModelError("", "You cannot logon");
-                return Index();
-            }
         }
 
         public ActionResult Logoff()
@@ -72,6 +58,12 @@ namespace Squawkings.Controllers
             return RedirectToAction("Index", "Logon");
         }
 
+    }
+
+    public class UserInfo
+    {
+        public string Password { get; set; }
+        public int UserId { get; set; }
     }
 
 
@@ -86,5 +78,19 @@ namespace Squawkings.Controllers
         public int UserId { get; set; }
         [HiddenInput]
         public string ReturnUrl { get; set; }
+    }
+
+    public interface IAuthentication
+    {
+        void Authenticate(string userName, bool rememberMe);
+    }
+
+    public class Authentication : IAuthentication
+    {
+        public void Authenticate(string userName, bool rememberMe)
+        {
+            FormsAuthentication.SetAuthCookie(userName, rememberMe);
+        }
+
     }
 }
