@@ -48,11 +48,61 @@ namespace Squawkings.Tests
             // Act
             var result = controller.Index() as ViewResult;
             var squawks = result.Model.As<SquawksInputModel>().SquawksList;
-            
-            
+
+
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(typeof(SquawksInputModel), result.Model.GetType());
+        }
+
+        [Test]
+        public void WhenModelViewIsNotValidReturnIndex()
+        {
+            // Arrange
+            var dbmock = new Mock<IDatabase>();
+
+            var controller = CB.Of(new HomeController(dbmock.Object))
+                .WithLoggedInId(1)
+                .Build();
+
+            controller.ModelState.AddModelError("key","error");
+
+            // Act
+            var result = controller.Index(new SquawkInputModel()) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void WhenModelViewIsValidInsertSquawk()
+        {
+            // Arrange
+            var dbmock = new Mock<IDatabase>();
+
+            var controller = CB.Of(new HomeController(dbmock.Object))
+                .WithLoggedInId(1)
+                .Build();
+
+            var SquawkInputModel = new SquawkInputModel();
+            SquawkInputModel.Squawk = "test";
+
+            var Squawk = new Squawk();
+            Squawk.Content = SquawkInputModel.Squawk;
+            Squawk.UserId = 1;
+
+            dbmock.Setup(x => x.Insert(Squawk));
+
+            // Act
+            var result = controller.Index(SquawkInputModel) as RedirectToRouteResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(Squawk.Content, SquawkInputModel.Squawk);
+            Assert.AreEqual(Squawk.UserId, 1);
+            Assert.AreEqual("Home", result.RouteValues["controller"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
         }
     }
 

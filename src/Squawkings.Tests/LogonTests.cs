@@ -8,7 +8,7 @@ using Squawkings.Controllers;
 namespace Squawkings.Tests
 {
     [TestFixture]
-    class LogonTests:ControllerTest
+    class LogonTests : ControllerTest
     {
         [Test]
         public void WhenModelNotValid()
@@ -16,7 +16,7 @@ namespace Squawkings.Tests
             //Arange
             var dmock = new Mock<IDatabase>();
             var controller = CB.Of(new LogonController(dmock.Object)).Build();
-            controller.ModelState.AddModelError("key","error");
+            controller.ModelState.AddModelError("key", "error");
 
             // Act
             var result = controller.Index(new LogonInputModel()) as ViewResult;
@@ -38,7 +38,7 @@ namespace Squawkings.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            dmock.Verify(x => x.SingleOrDefault<LogonInputModel>(It.IsAny<string>(),It.IsAny<object[]>()), Times.Once());
+            dmock.Verify(x => x.SingleOrDefault<LogonInputModel>(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once());
 
         }
 
@@ -51,7 +51,7 @@ namespace Squawkings.Tests
 
             var controller = CB.Of(new LogonController(dmock.Object, authmock.Object))
                 .Build();
-            
+
             var userInfo = new UserInfo();
             userInfo.Password = Crypto.HashPassword("password");
             userInfo.UserId = 1;
@@ -68,6 +68,28 @@ namespace Squawkings.Tests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual("Home", result.RouteValues["controller"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+
+        }     
+
+        [Test]
+        public void SignOut()
+        {
+            //Arange
+            var dmock = new Mock<IDatabase>();
+            var authmock = new Mock<IAuthentication>();
+
+            var controller = CB.Of(new LogonController(dmock.Object, authmock.Object))
+                .Build();
+
+            authmock.Setup(x => x.SignOut());
+
+            // Act
+            var result = controller.Logoff() as RedirectToRouteResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Logon", result.RouteValues["controller"]);
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using System.Web.Security;
 using FluentValidation;
 using NPoco;
 using Squawkings.Models;
@@ -34,7 +33,7 @@ namespace Squawkings.Controllers
 
             var SquawkTemplate = new SquawkTemplate();
             SquawkTemplate.Where("u.UserId=@0 or u.UserId in (select UserId from Followers where FollowerUserId=@0)", User.Identity.Name);
-            var squawkDisps = db.SkipTake<SquawkDisp>(0,20,SquawkTemplate.temp1);
+            var squawkDisps = db.SkipTake<SquawkDisp>(0, 20, SquawkTemplate.temp1);
 
             var squawks = new SquawksInputModel();
             squawks.SquawksList = squawkDisps;
