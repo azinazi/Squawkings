@@ -23,7 +23,7 @@ namespace Squawkings.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            dmock.Verify(x => x.SingleOrDefault<LogonInputModel>(It.IsAny<string>(), It.IsAny<object[]>()), Times.Never());
+            dmock.Verify(x => x.SingleOrDefault<UserInfo>(It.IsAny<string>(), It.IsAny<object[]>()), Times.Never());
         }
 
         [Test]
@@ -32,13 +32,16 @@ namespace Squawkings.Tests
             //Arange
             var dmock = new Mock<IDatabase>();
             var controller = CB.Of(new LogonController(dmock.Object)).Build();
+            UserInfo userInfo = null;
+
+            dmock.Setup(x => x.SingleOrDefault<UserInfo>(It.IsAny<string>(), It.IsAny<object[]>())).Returns(userInfo);
 
             // Act
             var result = controller.Index(new LogonInputModel()) as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
-            dmock.Verify(x => x.SingleOrDefault<LogonInputModel>(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once());
+            dmock.Verify(x => x.SingleOrDefault<UserInfo>(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once());
 
         }
 
@@ -52,9 +55,7 @@ namespace Squawkings.Tests
             var controller = CB.Of(new LogonController(dmock.Object, authmock.Object))
                 .Build();
 
-            var userInfo = new UserInfo();
-            userInfo.Password = Crypto.HashPassword("password");
-            userInfo.UserId = 1;
+            var userInfo = new UserInfo {Password = Crypto.HashPassword("password"), UserId = 1};
 
             var input = new LogonInputModel();
             input.Password = "password";
