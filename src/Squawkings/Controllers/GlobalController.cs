@@ -16,8 +16,8 @@ namespace Squawkings.Controllers
         public ActionResult Index()
         {
 
-            var SquawkTemplate = new SquawkTemplate();
-            var squawkDisps = db.SkipTake<SquawkDisp>(0, 20, SquawkTemplate.temp1);
+            var squawkTemplate = new SquawkTemplate();
+            var squawkDisps = db.SkipTake<SquawkDisp>(0, 20, squawkTemplate.temp1);
 
             return View(squawkDisps);
         }

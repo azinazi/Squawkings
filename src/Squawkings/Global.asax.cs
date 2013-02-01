@@ -58,7 +58,7 @@ namespace Squawkings
             HtmlConventionFactory.Add(new DataAnnotationValidationHtmlConventions());
             HtmlConventionFactory.Add(new UploadFileConventions());
 
-            ModelValidatorProviders.Providers.Add(new FluentValidationModelValidatorProvider( new AttributedValidatorFactory()));
+            ModelValidatorProviders.Providers.Add(new FluentValidationModelValidatorProvider(new StructureMapValidatorFactory()));
         }
     }
 

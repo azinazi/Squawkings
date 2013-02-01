@@ -1,5 +1,9 @@
+using System.Data;
+using System.Data.Common;
 using FluentValidation;
 using NPoco;
+using StackExchange.Profiling;
+using StackExchange.Profiling.Data;
 using StructureMap;
 namespace Squawkings {
     public static class IoC {
@@ -11,9 +15,11 @@ namespace Squawkings {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                         scan.ConnectImplementationsToTypesClosing(typeof(IValidator<>));
+                                        
                                     });
-            //                x.For<IExample>().Use<Example>();
-                            x.For<IDatabase>().HybridHttpOrThreadLocalScoped().Use(DatabaseFactory.GetDatabase());
+
+                            x.For<IDatabase>().HybridHttpOrThreadLocalScoped().Use(new DatabaseFactory("Squawkings"));
+                     
                         });
 
 
@@ -21,11 +27,22 @@ namespace Squawkings {
         }
     }
 
-    public class DatabaseFactory
+    public class DatabaseFactory : Database
     {
+        public DatabaseFactory(string connectionStringName) : base(connectionStringName)
+        {
+        }
+
         internal static IDatabase GetDatabase()
         {
             return new Database("Squawkings");
         }
+
+        public override IDbConnection OnConnectionOpened(IDbConnection connection)
+        {
+            // wrap the connection with a profiling connection that tracks timings
+            return new ProfiledDbConnection((DbConnection)connection, MiniProfiler.Current);
+        }
     }
+
 }

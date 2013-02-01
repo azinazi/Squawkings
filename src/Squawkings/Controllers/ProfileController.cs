@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using NPoco;
 using Squawkings.Models;
@@ -36,14 +35,14 @@ namespace Squawkings.Controllers
             followerInfo.Followers = db.FirstOrDefault<int>("select count(*) from Followers where UserId = @0", profile.UserId);
             followerInfo.Followyees = db.FirstOrDefault<int>("select count(*) from Followers where FollowerUserId = @0", profile.UserId);
             followerInfo.Following = db.FirstOrDefault<bool>("select 1 from Followers where FollowerUserId = @0", User.Identity.Id());
-            profile.followerInfo = followerInfo;
+            profile.FollowerInfo = followerInfo;
 
-            var SquawkTemplate = new SquawkTemplate();
-            SquawkTemplate.Where("u.UserName=@0 ", username);
-            var squawkDisps = db.Fetch<SquawkDisp>(SquawkTemplate.temp1);
+            var squawkTemplate = new SquawkTemplate();
+            squawkTemplate.Where("u.UserName=@0 ", username);
+            var squawkDisps = db.Fetch<SquawkDisp>(squawkTemplate.temp1);
             profile.SquawksList = squawkDisps;
 
-            profile.followerInfo.IsSameUser = User.Identity.Id() == profile.UserId;
+            profile.FollowerInfo.IsSameUser = User.Identity.Id() == profile.UserId;
 
             return View(profile);
         }
@@ -65,12 +64,12 @@ namespace Squawkings.Controllers
 
             if (following == 0)
             {
-                model.followerInfo.Following = true;
+                model.FollowerInfo.Following = true;
                 db.Insert(followers);
             }
             else
             {
-                model.followerInfo.Following = false;
+                model.FollowerInfo.Following = false;
                 db.Delete(followers);
             }
             return RedirectToAction("Index", "Profile");
@@ -88,23 +87,20 @@ namespace Squawkings.Controllers
         public ActionResult Image(ImageInputData data)
         {
             var user = db.SingleOrDefaultById<User>(User.Identity.Id());
-            var changes = Snapshotter.Start(user);
+          //  var changes = db.StartSnapshot(user);
 
             if (data.IsGravator)
             {
-                var hashedEmail = Crypto.Hash(user.Email, "md5").ToLower();
-                user.AvatarUrl = "http://www.gravatar.com/avatar/" + hashedEmail + ".png";
                 user.IsGravatar = true;
             }
             else if (data.Image != null)
             {
-                string url = Server.MapPath("~/Content/dev_images/") + User.Identity.Name + ".jpg";
-                data.Image.SaveAs(url);
-
+                data.Image.SaveAs(Server.MapPath("~/Content/dev_images/") + User.Identity.Name + ".jpg");
                 user.AvatarUrl = "content/dev_images/" + User.Identity.Name + ".jpg";
             }
 
-            db.Update(user, changes.UpdatedColumns());
+            //db.Update(user, changes.UpdatedColumns());
+            db.Update(user);
 
             return RedirectToAction("IndexById", "Profile", new { userId = User.Identity.Id() });
         }
@@ -135,7 +131,7 @@ namespace Squawkings.Controllers
             get { return FirstName + " " + LastName; }
         }
 
-        public FollowerInfo followerInfo { get; set; }
+        public FollowerInfo FollowerInfo { get; set; }
         public List<SquawkDisp> SquawksList { get; set; }
     }
 

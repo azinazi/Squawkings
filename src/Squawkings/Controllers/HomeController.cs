@@ -75,7 +75,7 @@ namespace Squawkings.Controllers
 
 
 
-    [FluentValidation.Attributes.Validator(typeof(HomeValidator))]
+   // [FluentValidation.Attributes.Validator(typeof(HomeValidator))]
     public class SquawkInputModel
     {
         [DataType(DataType.Text)]
@@ -89,8 +89,8 @@ namespace Squawkings.Controllers
         {
             RuleFor(s => s.Squawk)
                 .NotEmpty()
-                .Length(0, 400)
-                .WithMessage("length shouldnt exceed 400 chars.");
+                .Length(0, 3)
+                .WithMessage("length shouldnt exceed 3 chars.");
         }
 
     }

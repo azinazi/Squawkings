@@ -1,4 +1,5 @@
 ﻿@using Squawkings.Models
+@using StackExchange.Profiling
 @{
     Bundles.Reference("Content");
 }
@@ -16,7 +17,7 @@
             <div class="container">
                 <ul class="menu">
                     @if(User.Identity.IsAuthenticated){
-                    <li class="menu-item">@(@Html.MenuLink("Home", "Index", "Home", null))</li>
+                        <li class="menu-item">@(@Html.MenuLink("Home", "Index", "Home", null))</li>
                     }
                     <li class="menu-item">@(@Html.MenuLink("Global", "Index", "Global", null))</li>
                     @if (User.Identity.IsAuthenticated)
@@ -27,6 +28,7 @@
                 </ul>
             </div>
         </div>
+        @MiniProfiler.RenderIncludes(RenderPosition.Right)
         @RenderBody()
         @if (User.Identity.IsAuthenticated)
         {

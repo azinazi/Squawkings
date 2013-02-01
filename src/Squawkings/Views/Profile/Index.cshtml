@@ -6,7 +6,7 @@
     @using (Html.Form<ProfileSquawksInputModel>())
     {
         @Html.AntiForgeryToken()
-        @Html.Input(m => m.followerInfo.Following)
+        @Html.Input(m => m.FollowerInfo.Following)
         @Html.Input(m => m.UserId)
 
         <div class="profile-container row-fluid">
@@ -26,13 +26,13 @@
               
             </div> 
             <div class="followers span2">
-                <strong>@Model.followerInfo.Followyees</strong> Followers
+                <strong>@Model.FollowerInfo.Followyees</strong> Followers
                 <hr />
-                <strong>@Model.followerInfo.Followers</strong> Following
+                <strong>@Model.FollowerInfo.Followers</strong> Following
                 <hr />
-                @if (!Model.followerInfo.IsSameUser)
+                @if (!Model.FollowerInfo.IsSameUser)
                 {
-                    if (Model.followerInfo.Following)
+                    if (Model.FollowerInfo.Following)
                     {
                         @Html.Submit("Unfollow").AddClass("btn")
                         ;
